@@ -62,7 +62,7 @@ const DEFAULT_PORTALS = [
 
 // --- Initialize State ---
 function initApp() {
-    const session = localStorage.getItem("careerhub_session");
+    const session = localStorage.getItem("vcareer_session");
     const authScreen = document.getElementById("authScreen");
     const userProfileWidget = document.getElementById("userProfileWidget");
 
@@ -72,8 +72,8 @@ function initApp() {
         userProfileWidget.style.display = "flex";
         document.getElementById("loggedInUserLabel").textContent = currentUser;
 
-        const cachedPortals = localStorage.getItem(`careerhub_portals_${currentUser}`);
-        const cachedJobs = localStorage.getItem(`careerhub_jobs_${currentUser}`);
+        const cachedPortals = localStorage.getItem(`vcareer_portals_${currentUser}`);
+        const cachedJobs = localStorage.getItem(`vcareer_jobs_${currentUser}`);
 
         if (cachedPortals) {
             portals = JSON.parse(cachedPortals);
@@ -111,11 +111,11 @@ function initApp() {
 }
 
 function savePortalsToStorage() {
-    if (currentUser) localStorage.setItem(`careerhub_portals_${currentUser}`, JSON.stringify(portals));
+    if (currentUser) localStorage.setItem(`vcareer_portals_${currentUser}`, JSON.stringify(portals));
 }
 
 function saveJobsToStorage() {
-    if (currentUser) localStorage.setItem(`careerhub_jobs_${currentUser}`, JSON.stringify(jobs));
+    if (currentUser) localStorage.setItem(`vcareer_jobs_${currentUser}`, JSON.stringify(jobs));
 }
 
 // --- Global Stats Render ---
@@ -351,7 +351,7 @@ function setupEventListeners() {
 
     // Logout
     document.getElementById("logoutBtn").addEventListener("click", () => {
-        localStorage.removeItem("careerhub_session");
+        localStorage.removeItem("vcareer_session");
         currentUser = null;
         showToast("Logged Out", "Secured your vault session.", "info");
         initApp();
@@ -373,10 +373,10 @@ function setupEventListeners() {
             authToggleText.textContent = "Already have a vault?";
             authToggleBtn.textContent = "Sign In";
         } else {
-            authTitle.textContent = "CareerHub Dashboard";
+            authTitle.textContent = "VCareer Dashboard";
             authSubtitle.textContent = "Monitor your watchlisted career portals & get personalized job alerts.";
             authSubmitBtn.textContent = "Sign In";
-            authToggleText.textContent = "New to CareerHub?";
+            authToggleText.textContent = "New to VCareer?";
             authToggleBtn.textContent = "Create Account";
         }
     });
@@ -392,20 +392,20 @@ function setupEventListeners() {
         }
 
         if (isRegisterMode) {
-            const existing = localStorage.getItem(`careerhub_user_${username}`);
+            const existing = localStorage.getItem(`vcareer_user_${username}`);
             if (existing) {
                 showToast("Error", "Username is already taken.", "danger");
                 return;
             }
-            localStorage.setItem(`careerhub_user_${username}`, password);
-            localStorage.setItem("careerhub_session", username);
+            localStorage.setItem(`vcareer_user_${username}`, password);
+            localStorage.setItem("vcareer_session", username);
             showToast("Account Created", `Welcome, ${username}! Hydrating 50 portals...`, "success");
             isRegisterMode = false;
             initApp();
         } else {
-            const savedPassword = localStorage.getItem(`careerhub_user_${username}`);
+            const savedPassword = localStorage.getItem(`vcareer_user_${username}`);
             if (savedPassword === password) {
-                localStorage.setItem("careerhub_session", username);
+                localStorage.setItem("vcareer_session", username);
                 showToast("Logged In", `Welcome back, ${username}!`, "success");
                 initApp();
             } else {

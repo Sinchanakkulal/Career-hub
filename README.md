@@ -1,6 +1,6 @@
-# CareerHub — Personal Job Board & Portal Manager
+# VCareer — Personal Job Board & Portal Manager
 
-A sleek, dark-themed personal dashboard for tracking and managing company career portals. CareerHub lets you build a curated watchlist of up to 50+ companies, store your account credentials in a local vault, filter by industry or application status, and monitor new job openings — all without any backend or internet dependency.
+A sleek, dark-themed personal dashboard for tracking and managing company career portals. VCareer lets you build a curated watchlist of up to 50+ companies, store your account credentials in a local vault, filter by industry or application status, and monitor new job openings — all without any backend or internet dependency.
 
 ---
 
@@ -63,7 +63,7 @@ http://localhost:8000
 
 ## 🔐 Authentication
 
-CareerHub uses a local, browser-based authentication system:
+VCareer uses a local, browser-based authentication system:
 
 - Click **Create Account** on the login screen to register a username and password
 - All data (portals, vault credentials, jobs) is stored in your browser's `localStorage` and is **fully isolated per username**
@@ -111,12 +111,12 @@ All data is stored in the browser's `localStorage` under keys namespaced by user
 
 | Key | Contents |
 |---|---|
-| `careerhub_session` | Currently logged-in username |
-| `careerhub_user_<name>` | Hashed password for the account |
-| `careerhub_portals_<name>` | Portal list with vault data |
-| `careerhub_jobs_<name>` | Job entries |
+| `vcareer_session` | Currently logged-in username |
+| `vcareer_user_<name>` | Hashed password for the account |
+| `vcareer_portals_<name>` | Portal list with vault data |
+| `vcareer_jobs_<name>` | Job entries |
 
-To fully reset the app, open DevTools → Application → Local Storage → clear all `careerhub_*` keys.
+To fully reset the app, open DevTools → Application → Local Storage → clear all `vcareer_*` keys.
 
 ---
 
