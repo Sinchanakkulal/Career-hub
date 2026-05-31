@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerHub - Personal Job Board & Portal Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>CareerHub</span>
+            </div>
+            <div class="header-actions">
+                <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
+                    <span class="welcome-text">Hi, <strong id="loggedInUserLabel">Guest</strong></span>
+                    <button class="btn btn-secondary btn-sm" id="logoutBtn" title="Log out of session">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+                <button class="btn btn-primary" id="openAddPortalBtn">
+                    <i class="fa-solid fa-plus"></i> Add Portal
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Hero Intro Banner -->
+        <section class="hero-banner glass-panel">
+            <div class="hero-icon-wrap">
+                <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <div class="hero-content">
+                <h2>Your Personal Career Portal Hub</h2>
+                <p>CareerHub is the hub where job searchers can customize their job search with selective company career
+                    portals. It helps you continuously monitor new job notifications from your chosen companies — and
+                    easily add or remove portals anytime.</p>
+                <div class="hero-features">
+                    <span><i class="fa-solid fa-circle-check"></i> Selective company portals</span>
+                    <span><i class="fa-solid fa-circle-check"></i> Continuous job monitoring</span>
+                    <span><i class="fa-solid fa-circle-check"></i> Add &amp; delete portals instantly</span>
+                </div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number" id="statTotalPortals">0</div>
+                <div class="hero-stat-label">Portals Tracked</div>
+            </div>
+        </section>
+
+        <!-- Filter & Search Toolbar -->
+        <section class="toolbar" aria-label="Controls and filters">
+            <div class="search-filter-block">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" class="search-input"
+                        placeholder="Search portals by name or keyword...">
+                </div>
+                <select id="categoryFilter" class="select-filter">
+                    <option value="all">All Industries</option>
+                    <option value="MAANG / Tech Giants">MAANG / Tech Giants</option>
+                    <option value="Enterprise / SaaS">Enterprise / SaaS</option>
+                    <option value="AI / Hardware / Aero">AI / Hardware / Aero</option>
+                    <option value="Finance & Fintech">Finance &amp; Fintech</option>
+                    <option value="Gig, Travel & Media">Gig, Travel &amp; Media</option>
+                    <option value="Consulting & Tech Services">Consulting &amp; Tech Services</option>
+                    <option value="Healthcare & Pharma">Healthcare &amp; Pharma</option>
+                    <option value="Custom Portals">Custom Portals</option>
+                </select>
+                <select id="statusFilter" class="select-filter">
+                    <option value="all">All Accounts</option>
+                    <option value="not-created">No Account</option>
+                    <option value="incomplete">Incomplete Profile</option>
+                    <option value="complete">Profile Complete</option>
+                    <option value="applied">Applied</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Portals Grid View -->
+        <section id="portalsView" class="portal-grid"></section>
+
+    </main>
+
+    <!-- Modal: Add New Custom Career Portal -->
+    <div class="modal-overlay" id="addPortalModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Custom Career Portal</h3>
+                <button class="modal-close" id="closeAddPortalModalBtn">&times;</button>
+            </div>
+            <form id="addPortalForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="portalName">Portal / Company Name *</label>
+                        <input type="text" id="portalName" class="form-control" placeholder="e.g. OpenAI" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="portalUrl">Careers URL *</label>
+                        <input type="url" id="portalUrl" class="form-control" placeholder="https://openai.com/careers"
+                            required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="portalCategory">Industry Category</label>
+                            <select id="portalCategory" class="form-control">
+                                <option value="Custom Portals">Custom Portal</option>
+                                <option value="MAANG / Tech Giants">MAANG / Tech Giants</option>
+                                <option value="Enterprise / SaaS">Enterprise / SaaS</option>
+                                <option value="AI / Hardware / Aero">AI / Hardware / Aero</option>
+                                <option value="Finance & Fintech">Finance &amp; Fintech</option>
+                                <option value="Gig, Travel & Media">Gig, Travel &amp; Media</option>
+                                <option value="Consulting & Tech Services">Consulting &amp; Tech Services</option>
+                                <option value="Healthcare & Pharma">Healthcare &amp; Pharma</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="portalInitials">Abbreviation / Logo Letters</label>
+                            <input type="text" id="portalInitials" class="form-control" maxlength="3"
+                                placeholder="e.g. OA">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelAddPortalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Portal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Manage Account Credentials / Vault -->
+    <div class="modal-overlay" id="accountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="accountModalTitle">Manage Account</h3>
+                <button class="modal-close" id="closeAccountModalBtn">&times;</button>
+            </div>
+            <form id="accountForm">
+                <div class="modal-body">
+                    <input type="hidden" id="accountPortalId">
+                    <div class="form-group">
+                        <label for="portalUrlDisplay">Careers Portal URL</label>
+                        <input type="text" id="portalUrlDisplay" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountEmail">Username / Email</label>
+                        <input type="text" id="accountEmail" class="form-control" placeholder="e.g. user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountStatus">Application Status</label>
+                        <select id="accountStatus" class="form-control">
+                            <option value="not-created">No Account</option>
+                            <option value="incomplete">Incomplete Profile</option>
+                            <option value="complete">Profile Complete</option>
+                            <option value="applied">Applied</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNotes">Private Vault Notes</label>
+                        <textarea id="accountNotes" class="form-control" rows="4"
+                            placeholder="Add specific portal details or credentials notes..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelAccountBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container" aria-live="polite"></div>
+
+    <!-- Authentication Screen Overlay -->
+    <div class="auth-overlay active" id="authScreen">
+        <div class="auth-container glass-panel">
+            <div class="auth-header">
+                <i class="fa-solid fa-briefcase"></i>
+                <h2>CareerHub Dashboard</h2>
+                <p id="authSubtitle">Monitor your watchlisted career portals &amp; get personalized job alerts.</p>
+            </div>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="authUsername">Username</label>
+                    <input type="text" id="authUsername" class="form-control" placeholder="Enter username" required
+                        autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" class="form-control" placeholder="••••••••" required
+                        autocomplete="current-password">
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary" id="authSubmitBtn" style="width: 100%;">Sign
+                        In</button>
+                </div>
+            </form>
+            <div class="auth-toggle-sec">
+                <span id="authToggleText">New to CareerHub?</span>
+                <button id="authToggleBtn">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
